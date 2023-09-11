@@ -154,7 +154,7 @@ print(f"found: {+len(hrefs)} urls")
 for url in hrefs:
     load_webpage_with_random_user_agent(f"https://news.google.com/articles/{str(url).replace('./articles/','')}")
     time.sleep(10)
-    # add_url(url)
+    add_url(url)
 
 # Close the browser
 # driver.quit()
