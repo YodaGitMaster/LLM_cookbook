@@ -119,6 +119,7 @@ def load_webpage_with_random_user_agent(URL):
             return driver
         
         print(title)
+        add_url()
         body_element = driver.find_element(by=webdriver.common.by.By.TAG_NAME, value='article')
         if body_element != None:
             text = str(body_element.text).strip().rstrip()
