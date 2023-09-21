@@ -1,4 +1,6 @@
 import ast
+import os
+import glob
 
 EXCLUDED_FUNCTIONS = {
     "abs", "all", "any", "ascii", "bin", "bool", "callable", "chr", "classmethod", 
@@ -21,29 +23,29 @@ def generate_sequence_diagram(filename: str, text_output_filename: str):
     # Determine the main function dynamically
     try:
         main_func = max(function_details, key=lambda k: len(function_details[k]['calls']))
+        if main_func in function_details:
+            try:    
+                for called_function in function_details[main_func]['calls']:
+                    params_str = ''
+                    if called_function in function_details:
+                        params_str = function_details[called_function]['params']
+                    call_str = f"{main_func}->{called_function}: {params_str}"
+                    diagram.append(call_str)
+
+                    # Add return value
+                    if function_details[called_function]['return_type']:
+                        return_str = f"{main_func}<--{called_function}: {function_details[called_function]['return_type']}"
+                        diagram.append(return_str)
+
+                    # Add docstring note of the called function to the diagram right after its call
+                    if function_details[called_function]['docstring']:
+                        comment_str = f"note over {called_function}:{function_details[called_function]['docstring'].splitlines()[0]}"  # Only first line
+                        diagram.append(comment_str)
+            except:
+                pass
     except:
-        exit('no main function found')
-
-    if main_func in function_details:
-        try:    
-            for called_function in function_details[main_func]['calls']:
-                params_str = ''
-                if called_function in function_details:
-                    params_str = function_details[called_function]['params']
-                call_str = f"{main_func}->{called_function}: {params_str}"
-                diagram.append(call_str)
-
-                # Add return value
-                if function_details[called_function]['return_type']:
-                    return_str = f"{main_func}<--{called_function}: {function_details[called_function]['return_type']}"
-                    diagram.append(return_str)
-
-                # Add docstring note of the called function to the diagram right after its call
-                if function_details[called_function]['docstring']:
-                    comment_str = f"note over {called_function}:{function_details[called_function]['docstring'].splitlines()[0]}"  # Only first line
-                    diagram.append(comment_str)
-        except:
-            pass
+        print('no main function found')
+        pass
 
     # Now handle other functions
     for func_name, details in function_details.items():
@@ -119,5 +121,13 @@ def extract_function_details(source_code: str) -> dict:
     return visitor.function_details
 
 if __name__ == "__main__":
-    file = 'AIPodcaster\main.py'
-    generate_sequence_diagram(file, f"{file}.txt")
+
+    folder_path = 'AINewsSummary'
+
+    # Use glob to get a list of all .py files in the folder
+    py_files = glob.glob(os.path.join(folder_path, '*.py'))
+
+    # Loop through the list of .py files
+    for file in py_files:
+        print(file)
+        generate_sequence_diagram(file, f"{file}.txt")
