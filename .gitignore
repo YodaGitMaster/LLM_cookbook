@@ -30,3 +30,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.txt
+*.ext
+*.json
+*.bin
+*.pt
+*.pth
