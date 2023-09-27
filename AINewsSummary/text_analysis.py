@@ -8,7 +8,7 @@ import concurrent.futures
 from database import SentimentDatabase
 import json
 import time
-
+from typing import Union
 from transformers import logging
 
 logging.set_verbosity_warning()
@@ -87,7 +87,7 @@ def analyze_title_finbert_tone(title: str) -> str:
         title (str): The title to analyze.
 
     Returns:
-        tuple: A tuple containing sentiment label and predicted class.
+        Union: A Union containing sentiment label and predicted class.
     """
     tokenizer = AutoTokenizer.from_pretrained("yiyanghkust/finbert-tone", model_max_length=512)
     model = AutoModelForSequenceClassification.from_pretrained("yiyanghkust/finbert-tone")
@@ -100,7 +100,7 @@ def analyze_title_finbert_tone(title: str) -> str:
 
 
 # Function to analyze text using finbert model
-def analyze_title_ProsusAI_finbert(title: str) -> Tuple[str, int]:
+def analyze_title_ProsusAI_finbert(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the ProsusAI/finbert model.
     """
@@ -113,7 +113,7 @@ def analyze_title_ProsusAI_finbert(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_finbert_tone(title: str) -> Tuple[str, int]:
+def analyze_title_finbert_tone(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the yiyanghkust/finbert-tone model.
     """
@@ -126,7 +126,7 @@ def analyze_title_finbert_tone(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_Farshid_allagree2(title: str) -> Tuple[str, int]:
+def analyze_title_Farshid_allagree2(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the Farshid/bert-large-uncased-financial-phrasebank-allagree2 model.
     """
@@ -140,7 +140,7 @@ def analyze_title_Farshid_allagree2(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_distilled_roberta(title: str) -> Tuple[str, int]:
+def analyze_title_distilled_roberta(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the mrm8488/distilroberta-finetuned-financial-news-sentiment-analysis model.
     """
@@ -154,7 +154,7 @@ def analyze_title_distilled_roberta(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_sigma(title: str) -> Tuple[str, int]:
+def analyze_title_sigma(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the Sigma/financial-sentiment-analysis model.
     """
@@ -167,7 +167,7 @@ def analyze_title_sigma(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_twitter_roberta(title: str) -> Tuple[str, int]:
+def analyze_title_twitter_roberta(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the cardiffnlp/twitter-roberta-base-sentiment-latest model.
     """
@@ -181,7 +181,7 @@ def analyze_title_twitter_roberta(title: str) -> Tuple[str, int]:
     sentiment = labels[predicted_class]
     return sentiment, predicted_class
 
-def analyze_title_deberta_v3(title: str) -> Tuple[str, int]:
+def analyze_title_deberta_v3(title: str) -> Union[str, int]:
     """
     Analyze the sentiment of a title using the nickmuchi/deberta-v3-base-finetuned-finance-text-classification model.
     """
